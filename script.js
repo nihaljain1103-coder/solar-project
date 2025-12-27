@@ -226,13 +226,29 @@ formInputs.forEach(input => {
 // Preload Optimization
 // ===================================
 
-// Lazy load images (if any are added in the future)
-if ('loading' in HTMLImageElement.prototype) {
-    const images = document.querySelectorAll('img[loading="lazy"]');
+// Images with loading="lazy" attribute will be handled by the browser automatically
+// No additional code needed for native lazy loading
+
+// ===================================
+// Image Loading Error Handling
+// ===================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const images = document.querySelectorAll('img');
+    
     images.forEach(img => {
-        img.src = img.dataset.src;
+        img.addEventListener('error', function() {
+            console.error('Image failed to load:', this.src);
+            // Optionally add a fallback placeholder
+            // this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23ddd" width="400" height="300"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="18" dy="10.5" font-weight="bold" x="50%25" y="50%25" text-anchor="middle"%3EImage not available%3C/text%3E%3C/svg%3E';
+        });
+        
+        img.addEventListener('load', function() {
+            // Image loaded successfully
+            this.style.opacity = '1';
+        });
     });
-}
+});
 
 // ===================================
 // Console Welcome Message (for developers)
