@@ -64,6 +64,25 @@ body {
     overflow-x: hidden;
 }
 
+/* Image Styles */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Ensure images are visible and load properly */
+img[src] {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Fallback for broken images */
+img[src=""],
+img:not([src]) {
+    display: none;
+}
+
 /* Container */
 .container {
     max-width: 1200px;
@@ -173,20 +192,35 @@ body {
     overflow: hidden;
 }
 
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+}
+
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-    background-size: cover;
-    opacity: 0.3;
+    background: linear-gradient(135deg, rgba(30, 136, 229, 0.7) 0%, rgba(45, 134, 89, 0.7) 100%);
+    z-index: 1;
 }
 
 .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: 800px;
     padding: var(--spacing-lg);
 }
@@ -222,6 +256,7 @@ body {
     height: 100px;
     color: var(--background-white);
     overflow: hidden;
+    z-index: 2;
 }
 
 .hero-waves svg {
@@ -313,20 +348,43 @@ section {
 .about-content {
     max-width: 1000px;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.about-image {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
 }
 
 .about-text {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--spacing-md);
 }
 
 .about-item {
     background: var(--background-white);
-    padding: var(--spacing-md);
+    padding: 0;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-light);
     transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+    overflow: hidden;
 }
 
 .about-item:hover {
@@ -334,20 +392,28 @@ section {
     box-shadow: 0 8px 25px var(--shadow-medium);
 }
 
-.about-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-sm);
+.about-item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.about-item > h3,
+.about-item > p {
+    padding: 0 var(--spacing-md);
 }
 
 .about-item h3 {
     font-size: var(--font-size-h4);
     color: var(--primary-green);
-    margin-bottom: var(--spacing-sm);
+    margin: var(--spacing-md) 0 var(--spacing-sm);
 }
 
 .about-item p {
     color: var(--text-gray);
     line-height: 1.8;
+    padding-bottom: var(--spacing-md);
 }
 
 /* ===================================
@@ -365,11 +431,14 @@ section {
 
 .service-card {
     background: var(--background-white);
-    padding: var(--spacing-md);
+    padding: 0;
     border-radius: 12px;
     box-shadow: 0 4px 15px var(--shadow-light);
     transition: transform var(--transition-medium), box-shadow var(--transition-medium);
     border-top: 4px solid var(--primary-blue);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .service-card:nth-child(2) {
@@ -389,21 +458,44 @@ section {
     box-shadow: 0 12px 30px var(--shadow-medium);
 }
 
-.service-icon {
-    font-size: 3.5rem;
-    margin-bottom: var(--spacing-sm);
+.service-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.service-card:hover .service-image img {
+    transform: scale(1.1);
+}
+
+.service-card > h3,
+.service-card > p,
+.service-card > ul {
+    padding: 0 var(--spacing-md);
 }
 
 .service-card h3 {
     font-size: var(--font-size-h4);
     color: var(--text-dark);
-    margin-bottom: var(--spacing-sm);
+    margin: var(--spacing-md) 0 var(--spacing-sm);
 }
 
 .service-card p {
     color: var(--text-gray);
     margin-bottom: var(--spacing-md);
     line-height: 1.8;
+}
+
+.service-card ul {
+    padding-bottom: var(--spacing-md);
 }
 
 .service-features {
@@ -441,11 +533,14 @@ section {
 
 .feature-item {
     background: var(--background-white);
-    padding: var(--spacing-md);
+    padding: 0;
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 15px var(--shadow-light);
     transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .feature-item:hover {
@@ -453,20 +548,33 @@ section {
     box-shadow: 0 8px 25px var(--shadow-medium);
 }
 
-.feature-icon {
-    font-size: 3.5rem;
-    margin-bottom: var(--spacing-sm);
+.feature-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-slow);
+}
+
+.feature-item:hover .feature-image {
+    transform: scale(1.05);
+}
+
+.feature-item h3,
+.feature-item p {
+    padding: 0 var(--spacing-md);
 }
 
 .feature-item h3 {
     font-size: var(--font-size-h4);
     color: var(--primary-blue);
-    margin-bottom: var(--spacing-sm);
+    margin: var(--spacing-md) 0 var(--spacing-sm);
 }
 
 .feature-item p {
     color: var(--text-gray);
     line-height: 1.8;
+    padding-bottom: var(--spacing-md);
 }
 
 /* ===================================
@@ -730,8 +838,18 @@ section {
     }
     
     /* About */
-    .about-text {
+    .about-content {
         grid-template-columns: 1fr;
+    }
+    
+    .about-image {
+        max-height: 300px;
+    }
+    
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
     /* Services */
